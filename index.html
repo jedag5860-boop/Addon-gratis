@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADDON FREE</title>
+
+    <!-- Font keren dari Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: url('images.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            text-align: center;
+            color: white;
+        }
+
+        /* Hamburger menu */
+        .hamburger {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        .hamburger div {
+            width: 30px;
+            height: 4px;
+            background-color: white;
+            margin: 6px 0;
+            transition: 0.4s;
+        }
+
+        /* Side menu */
+        .side-menu {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: rgba(0,0,0,0.9);
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+            z-index: 1000;
+        }
+        .side-menu a {
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 1.2em;
+            color: white;
+            display: block;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .side-menu a:hover {
+            background-color: #575757;
+        }
+        .side-menu .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 2em;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Container utama */
+        .container {
+            padding: 30px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 80px;
+            width: 80%;
+            max-width: 600px;
+        }
+        h1 { 
+            font-size: 2.8em; 
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+            animation: neon 3s infinite alternate;
+        }
+        @keyframes neon {
+            0%   { text-shadow: 0 0 5px #ff00de, 0 0 10px #ff00de, 0 0 20px #ff00de, 0 0 40px #ff00de; color: #ff00de; }
+            25%  { text-shadow: 0 0 5px #00fff2, 0 0 10px #00fff2, 0 0 20px #00fff2, 0 0 40px #00fff2; color: #00fff2; }
+            50%  { text-shadow: 0 0 5px #39ff14, 0 0 10px #39ff14, 0 0 20px #39ff14, 0 0 40px #39ff14; color: #39ff14; }
+            75%  { text-shadow: 0 0 5px #ffd700, 0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 40px #ffd700; color: #ffd700; }
+            100% { text-shadow: 0 0 5px #ff4500, 0 0 10px #ff4500, 0 0 20px #ff4500, 0 0 40px #ff4500; color: #ff4500; }
+        }
+        p { font-size: 1.1em; }
+        a.download-link { color: lightgreen; text-decoration: underline; }
+        .message { margin-top: 10px; color: yellow; }
+
+        /* Form upload popup */
+        .upload-form {
+            display: none;
+            padding: 20px;
+            background: rgba(0,0,0,0.8);
+            border-radius: 8px;
+            margin: 10px;
+        }
+        .upload-form input, .upload-form button {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            margin-top: 10px;
+        }
+        .upload-form input[type="file"] { background: white; color: black; }
+        .upload-form button {
+            background-color: #6c63ff;
+            color: white;
+            cursor: pointer;
+        }
+        .upload-form button:hover { background-color: #574b90; }
+    </style>
+</head>
+<body>
+    <!-- Hamburger icon -->
+    <div class="hamburger" onclick="openMenu()">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+    <!-- Side menu -->
+    <div id="sideMenu" class="side-menu">
+        <a href="javascript:void(0)" class="close-btn" onclick="closeMenu()">&times;</a>
+        <a href="#">Home</a>
+        <a onclick="toggleUploadForm()">Upload Addon</a>
+        <div class="upload-form" id="uploadForm">
+            <input type="password" id="password" placeholder="Password pembuat" required><br>
+            <input type="file" id="fileInput" style="display:none;"><br>
+            <button id="loginBtn">Masuk</button>
+            <button id="uploadBtn" style="display:none;">Upload</button>
+            <div id="message" class="message"></div>
+        </div>
+        <a href="#">Tentang</a>
+    </div>
+
+    <div class="container">
+        <h1>ADDON FREE</h1>
+        <p>SAYA AKAN MEMBAGIKAN LINK ADDON DISINI SUPAYA KALIAN DAPAT MENDOWNLOAD ADDON DENGAN MUDAH</p>
+
+        <!-- Tempat link unduhan -->
+        <div id="latest-link">
+            <p>Belum ada file yang diunggah.</p>
+        </div>
+    </div>
+
+    <footer style="text-align:center;margin-top:16px;">
+        <div class="small">© <span id="year"></span> ADDON FREE</div>
+        <div class="small">PEMBUAT WEB: M.BRIAN ZAFRAN</div>
+    </footer>
+
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+        const correctPassword = "Brian"; // ganti password di sini
+        let uploadedFileURL = "";
+
+        // Menu functions
+        function openMenu() {
+            document.getElementById("sideMenu").style.width = "250px";
+        }
+        function closeMenu() {
+            document.getElementById("sideMenu").style.width = "0";
+        }
+
+        // Toggle upload form
+        function toggleUploadForm() {
+            const form = document.getElementById("uploadForm");
+            form.style.display = form.style.display === "block" ? "none" : "block";
+        }
+
+        // Login upload
+        document.getElementById("loginBtn").addEventListener("click", function() {
+            const pass = document.getElementById("password").value;
+            if (pass === correctPassword) {
+                document.getElementById("fileInput").style.display = "block";
+                document.getElementById("uploadBtn").style.display = "inline-block";
+                document.getElementById("password").style.display = "none";
+                this.style.display = "none";
+            } else {
+                alert("Password salah!");
+            }
+        });
+
+        // Upload simulation
+        document.getElementById("uploadBtn").addEventListener("click", function() {
+            const fileInput = document.getElementById("fileInput");
+            const file = fileInput.files[0];
+            if (!file) {
+                alert("Pilih file terlebih dahulu!");
+                return;
+            }
+
+            uploadedFileURL = URL.createObjectURL(file);
+
+            document.getElementById("latest-link").innerHTML =
+                `<p>📥 Link unduhan terbaru: <a class="download-link" href="${uploadedFileURL}" download="${file.name}">${file.name}</a></p>`;
+            document.getElementById("message").textContent = "✅ Upload berhasil (simulasi, hanya tersimpan sementara).";
+        });
+    </script>
+</body>
+</html>
